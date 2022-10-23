@@ -12,6 +12,7 @@ String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 class ProfileModel {
   ProfileModel({
     this.name,
+    this.email,
     this.nik,
     this.birth,
     this.gender,
@@ -21,6 +22,7 @@ class ProfileModel {
   });
 
   String? name;
+  String? email;
   String? nik;
   String? birth;
   String? gender;
@@ -30,6 +32,7 @@ class ProfileModel {
 
   factory ProfileModel.fromJson(Map<String, dynamic>? json) => ProfileModel(
         name: json?["name"],
+        email: json?["email"],
         nik: json?["nik"],
         birth: json?["birth"],
         gender: json?["gender"],
@@ -40,6 +43,7 @@ class ProfileModel {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "email": email,
         "nik": nik,
         "birth": birth,
         "gender": gender,

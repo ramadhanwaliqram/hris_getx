@@ -6,6 +6,7 @@ final String base_url = 'http://dianraudha.my.id';
 final String loginUrl = '${base_url}/oauth/token';
 final String getProfileUrl = '${base_url}/api/profile';
 final String getRemainingLeaveUrl = '${base_url}/api/leave';
+final String getAttendanceUrl = '${base_url}/api/attendance';
 final String getLeaveHistoryUrl = '${base_url}/api/leave/histories';
 final String getAllAttendanceUrl = '${base_url}/api/attendance/all';
 final String getTodayAttendanceUrl = '${base_url}/api/attendance/today';

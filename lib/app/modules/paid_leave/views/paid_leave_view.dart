@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hris_getx/app/data/models/history_leave_model.dart';
+import 'package:hris_getx/app/modules/paid_leave/views/detail_leave_history_view.dart';
 import 'package:hris_getx/app/routes/app_pages.dart';
 import 'package:skeletons/skeletons.dart';
 import '../../../data/custom_bottom_nav.dart';
@@ -69,25 +70,6 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
                 );
               },
             )
-            // controller.obx(
-            //   (state) => Obx(
-            //     () => Text(
-            //       'Sisa Cuti: ${controller.remainingLeave} Hari',
-            //       style: GoogleFonts.nunitoSans(
-            //         color: Color(0xff4C6493),
-            //         fontSize: 12,
-            //         fontWeight: FontWeight.w700,
-            //       ),
-            //     ),
-            //   ),
-            //   onLoading: SkeletonLine(
-            //     style: SkeletonLineStyle(
-            //       height: 12,
-            //       width: MediaQuery.of(context).size.width / 3,
-            //       borderRadius: BorderRadius.circular(8),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -113,82 +95,105 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
                         child: Theme(
                           data: Theme.of(context)
                               .copyWith(dividerColor: Colors.transparent),
-                          child: ExpansionTile(
-                            title: Row(
-                              children: [
-                                Text(
-                                  '${controller.listHistories.value.data?[index].year}',
-                                  style: GoogleFonts.montserrat(
-                                    color: Color(0xff303030),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
+                          child: Obx(
+                            () => ExpansionTile(
+                              title: Row(
+                                children: [
+                                  Text(
+                                    '${controller.listHistories.value.data?[index].year}',
+                                    style: GoogleFonts.montserrat(
+                                      color: Color(0xff303030),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                                Obx(
-                                  () => Icon(controller.customTileExpanded.value
-                                      ? Icons.keyboard_arrow_up_rounded
-                                      : Icons.keyboard_arrow_down_rounded),
+                                  Obx(
+                                    () => Icon(controller
+                                            .customTileExpanded.value
+                                        ? Icons.keyboard_arrow_up_rounded
+                                        : Icons.keyboard_arrow_down_rounded),
+                                  ),
+                                ],
+                              ),
+                              tilePadding: EdgeInsets.all(0),
+                              trailing: SizedBox(),
+                              children: <Widget>[
+                                ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: controller.listHistories.value
+                                      .data?[index].data?.length,
+                                  itemBuilder: (context, indexCollapse) {
+                                    var dataCollapse = controller
+                                        .listHistories
+                                        .value
+                                        .data?[index]
+                                        .data?[indexCollapse];
+                                    var leaveStatus = dataCollapse?.status;
+                                    Color? leaveColor;
+
+                                    if (leaveStatus == 'pending') {
+                                      leaveStatus = 'Diajukan';
+                                      leaveColor = Color(0xffFFB000);
+                                    }
+                                    if (leaveStatus == 'approved') {
+                                      leaveStatus = 'Disetujui';
+                                      leaveColor = Color(0xff00E23F);
+                                    }
+                                    if (leaveStatus == 'reject') {
+                                      leaveStatus = 'Ditolak';
+                                      leaveColor = Color(0xffFF5B5B);
+                                    }
+                                    return Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        splashColor:
+                                            Color.fromARGB(30, 0, 0, 0),
+                                        highlightColor:
+                                            Color.fromARGB(30, 0, 0, 0),
+                                        onTap: () {
+                                          Get.to(
+                                            () => DetailLeaveHistoryView(
+                                              id: dataCollapse?.id,
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 24),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '${dataCollapse?.start ?? '-'} s/d ${dataCollapse?.end ?? '-'}',
+                                                style: GoogleFonts.nunitoSans(
+                                                  color: Color(0xff666666),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              Text(
+                                                '${toBeginningOfSentenceCase(leaveStatus ?? '-')}',
+                                                style: GoogleFonts.nunitoSans(
+                                                  color: leaveColor,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
+                              onExpansionChanged: (bool expanded) {
+                                controller.listHistories.value.data?[index]
+                                    .expanded!.value = !expanded;
+                              },
                             ),
-                            tilePadding: EdgeInsets.all(0),
-                            trailing: SizedBox(),
-                            children: <Widget>[
-                              ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: controller.listHistories.value
-                                    .data?[index].data?.length,
-                                itemBuilder: (context, indexCollapse) {
-                                  var dataCollapse = controller.listHistories
-                                      .value.data?[index].data?[indexCollapse];
-                                  var leaveStatus = dataCollapse?.status;
-                                  Color? leaveColor;
-
-                                  if (leaveStatus == 'pending') {
-                                    leaveStatus = 'Diajukan';
-                                    leaveColor = Color(0xffFFB000);
-                                  }
-                                  if (leaveStatus == 'approved') {
-                                    leaveStatus = 'Disetujui';
-                                    leaveColor = Color(0xff00E23F);
-                                  }
-                                  if (leaveStatus == 'reject') {
-                                    leaveStatus = 'Ditolak';
-                                    leaveColor = Color(0xffFF5B5B);
-                                  }
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${dataCollapse?.start} s/d ${dataCollapse?.end}',
-                                          style: GoogleFonts.nunitoSans(
-                                            color: Color(0xff666666),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${toBeginningOfSentenceCase(leaveStatus)}',
-                                          style: GoogleFonts.nunitoSans(
-                                            color: leaveColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                            onExpansionChanged: (bool expanded) {
-                              controller.customTileExpanded.value = expanded;
-                            },
                           ),
                         ),
                       );
@@ -219,130 +224,6 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
               );
             },
           )
-          // controller.obx(
-          //   (state) => Obx(
-          //     () => ListView.builder(
-          //       physics: NeverScrollableScrollPhysics(),
-          //       shrinkWrap: true,
-          //       itemCount: controller.listHistories.value.data?.length,
-          //       itemBuilder: (context, index) {
-          //         return Container(
-          //           child: Theme(
-          //             data: Theme.of(context)
-          //                 .copyWith(dividerColor: Colors.transparent),
-          //             child: ExpansionTile(
-          //               title: Row(
-          //                 children: [
-          //                   Text(
-          //                     '${controller.listHistories.value.data?[index].year}',
-          //                     style: GoogleFonts.montserrat(
-          //                       color: Color(0xff303030),
-          //                       fontSize: 16,
-          //                       fontWeight: FontWeight.w700,
-          //                     ),
-          //                   ),
-          //                   Obx(
-          //                     () => Icon(controller.customTileExpanded.value
-          //                         ? Icons.keyboard_arrow_up_rounded
-          //                         : Icons.keyboard_arrow_down_rounded),
-          //                   ),
-          //                 ],
-          //               ),
-          //               tilePadding: EdgeInsets.all(0),
-          //               trailing: SizedBox(),
-          //               children: <Widget>[
-          //                 ListView.builder(
-          //                   physics: NeverScrollableScrollPhysics(),
-          //                   shrinkWrap: true,
-          //                   itemCount: controller
-          //                       .listHistories.value.data?[index].data?.length,
-          //                   itemBuilder: (context, indexCollapse) {
-          //                     var dataCollapse = controller.listHistories.value
-          //                         .data?[index].data?[indexCollapse];
-          //                     var leaveStatus = dataCollapse?.status;
-          //                     Color? leaveColor;
-
-          //                     if (leaveStatus == 'pending') {
-          //                       leaveStatus = 'Diajukan';
-          //                       leaveColor = Color(0xffFFB000);
-          //                     }
-          //                     if (leaveStatus == 'approved') {
-          //                       leaveStatus = 'Disetujui';
-          //                       leaveColor = Color(0xff00E23F);
-          //                     }
-          //                     if (leaveStatus == 'reject') {
-          //                       leaveStatus = 'Ditolak';
-          //                       leaveColor = Color(0xffFF5B5B);
-          //                     }
-          //                     return Padding(
-          //                       padding:
-          //                           const EdgeInsets.symmetric(vertical: 12),
-          //                       child: Row(
-          //                         mainAxisAlignment:
-          //                             MainAxisAlignment.spaceBetween,
-          //                         children: [
-          //                           Text(
-          //                             '${dataCollapse?.start} s/d ${dataCollapse?.end}',
-          //                             style: GoogleFonts.nunitoSans(
-          //                               color: Color(0xff666666),
-          //                               fontSize: 12,
-          //                               fontWeight: FontWeight.w400,
-          //                             ),
-          //                           ),
-          //                           Text(
-          //                             '${toBeginningOfSentenceCase(leaveStatus)}',
-          //                             style: GoogleFonts.nunitoSans(
-          //                               color: leaveColor,
-          //                               fontSize: 12,
-          //                               fontWeight: FontWeight.w400,
-          //                             ),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                     );
-          //                   },
-          //                 ),
-          //               ],
-          //               onExpansionChanged: (bool expanded) {
-          //                 controller.customTileExpanded.value = expanded;
-          //               },
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          //   // onLoading: Column(
-          //   //   children: [
-          //   //     SkeletonLine(
-          //   //       style: SkeletonLineStyle(
-          //   //         height: 12,
-          //   //         width: MediaQuery.of(context).size.width / 3,
-          //   //         borderRadius: BorderRadius.circular(8),
-          //   //       ),
-          //   //     ),
-          //   //     SkeletonParagraph(
-          //   //       style: SkeletonParagraphStyle(
-          //   //           lines: 3,
-          //   //           spacing: 6,
-          //   //           lineStyle: SkeletonLineStyle(
-          //   //             randomLength: true,
-          //   //             height: 10,
-          //   //             borderRadius: BorderRadius.circular(8),
-          //   //             minLength: MediaQuery.of(context).size.width / 2,
-          //   //           )),
-          //   //     ),
-          //   //     SizedBox(height: 12),
-          //   //     SkeletonAvatar(
-          //   //       style: SkeletonAvatarStyle(
-          //   //         width: double.infinity,
-          //   //         minHeight: MediaQuery.of(context).size.height / 8,
-          //   //         maxHeight: MediaQuery.of(context).size.height / 3,
-          //   //       ),
-          //   //     ),
-          //   //   ],
-          //   // ),
-          // ),
         ],
       ),
     );

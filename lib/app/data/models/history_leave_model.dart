@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 LeaveHistoryModel leaveHistoryModelFromJson(String str) =>
     LeaveHistoryModel.fromJson(json.decode(str));
 
@@ -79,20 +81,24 @@ class LeaveHistoryModel {
 class LeaveHistoryModelData {
   LeaveHistoryModelData({
     this.year,
+    this.expanded,
     this.data,
   });
 
   int? year;
+  RxBool? expanded;
   List<Data>? data;
 
   factory LeaveHistoryModelData.fromJson(Map<String, dynamic>? json) =>
       LeaveHistoryModelData(
         year: json?["year"],
+        expanded: false.obs,
         data: List<Data>.from(json?["data"].map((x) => Data.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "year": year,
+        "expanded": expanded,
         "data": List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }

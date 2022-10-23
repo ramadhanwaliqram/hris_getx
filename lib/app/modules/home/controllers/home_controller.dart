@@ -10,11 +10,15 @@ import 'package:hris_getx/app/data/models/today_attendance_model.dart';
 import 'package:intl/intl.dart';
 import 'package:hris_getx/app/data/models/profile_model.dart';
 
+import '../../../data/models/attendance_model.dart';
+
 class HomeController extends GetxController with StateMixin {
   var dio = Dio();
   final String userToken = GetStorage().read('access_token');
 
   final dayNow = DateFormat('EEEE, d MMM, ' 'yyyy').format(DateTime.now());
+  final monthNow = DateFormat('M').format(DateTime.now());
+  final yearNow = DateFormat('yyyy').format(DateTime.now());
   final timeIn =
       DateFormat('Hm').format(DateTime.now()).toString().replaceAll('.', ':');
   final timeNow = DateFormat('jm').format(DateTime.now());
@@ -45,6 +49,7 @@ class HomeController extends GetxController with StateMixin {
   RxBool isLoading = true.obs;
 
   final todayAttendance = TodayAttendanceModel().obs;
+  final summaryAttendance = AttendanceModel().obs;
 
   @override
   void onInit() {
@@ -88,6 +93,7 @@ class HomeController extends GetxController with StateMixin {
     final response = await dio.get(getProfileUrl);
 
     if (response.statusCode == 200) {
+      GetStorage().write('name', '${response.data['name']}');
       _profile.value = ProfileModel.fromJson(response.data);
       change(_profile, status: RxStatus.success());
     } else {
@@ -110,6 +116,28 @@ class HomeController extends GetxController with StateMixin {
 
     isLoading.value = false;
     return calendars.value = CalendarModel.fromJson(response.data);
+  }
+
+  Future<dynamic> getAttendance() async {
+    dio.options.headers['Authorization'] = "Bearer $userToken";
+    dio.options.headers['Accept'] = 'application/json';
+    dio.options.headers["Content-Type"] = "multipart/form-data";
+
+    FormData formData = await FormData.fromMap({
+      'month': '${monthNow}',
+      'year': '${yearNow}',
+    });
+
+    Response response =
+        await dio.post(getAttendanceUrl, data: formData).then((value) {
+      return value;
+    }).catchError((error) {
+      return error;
+    });
+
+    print(response.data);
+
+    return summaryAttendance.value = AttendanceModel.fromJson(response.data);
   }
 
   Future<dynamic> getTodayAttendance() async {
@@ -142,13 +170,9 @@ class HomeController extends GetxController with StateMixin {
       return response.data;
     } on DioError catch (e) {
       if (e.response!.statusCode == 400) {
-        if (e.response!.data['message'] == "TO_FAR_LOCATION") {
-          return throw Exception('Maaf, lokasi anda terlalu jauh!');
-        }
-        if (e.response!.data['message'] == "ALREADY_ATTENDANCE_OUT") {
-          return throw Exception('Maaf, Anda sudah absen!');
-        }
+        return throw Exception('${e.response!.data['message']}');
       }
+      return throw Exception('Failed to load data');
     }
   }
 }

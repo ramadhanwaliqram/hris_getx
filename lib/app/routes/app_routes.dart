@@ -10,6 +10,7 @@ abstract class Routes {
   static const OTP = _Paths.OTP;
   static const PAID_LEAVE = _Paths.PAID_LEAVE;
   static const APLY_LEAVE = _Paths.APLY_LEAVE;
+  static const DETAIL_LEAVE_HISTORY = _Paths.DETAIL_LEAVE_HISTORY;
   static const SALARY = _Paths.SALARY;
 }
 
@@ -22,5 +23,6 @@ abstract class _Paths {
   static const OTP = '/otp';
   static const PAID_LEAVE = '/paid-leave';
   static const APLY_LEAVE = '/aply-leave';
+  static const DETAIL_LEAVE_HISTORY = '/detail-leave-history';
   static const SALARY = '/salary';
 }
