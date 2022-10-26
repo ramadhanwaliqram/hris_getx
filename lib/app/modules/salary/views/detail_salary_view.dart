@@ -36,15 +36,6 @@ class DetailSalaryView extends GetView {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Detail Cuti",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff303030),
-                  ),
-                ),
-                SizedBox(height: 32),
                 FutureBuilder(
                   future: detailController.getSalaryById(id),
                   builder: (context, snapshot) {
@@ -52,6 +43,15 @@ class DetailSalaryView extends GetView {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            "Slip Gaji ${detailController.listSalaryById.value.period}",
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff303030),
+                            ),
+                          ),
+                          SizedBox(height: 32),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -64,9 +64,9 @@ class DetailSalaryView extends GetView {
                                 ),
                               ),
                               Text(
-                                "+ ${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.salary ?? 0, 2)}",
+                                "${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.salary ?? 0, 2)}",
                                 style: GoogleFonts.nunitoSans(
-                                  color: Color(0xff00E23F),
+                                  color: Color(0xff666666),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -94,7 +94,7 @@ class DetailSalaryView extends GetView {
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -112,9 +112,9 @@ class DetailSalaryView extends GetView {
                                 ),
                               ),
                               Text(
-                                "+ ${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.additionalSalary ?? 0, 2)}",
+                                "${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.additionalSalary ?? 0, 2)}",
                                 style: GoogleFonts.nunitoSans(
-                                  color: Color(0xff00E23F),
+                                  color: Color(0xff666666),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -142,7 +142,7 @@ class DetailSalaryView extends GetView {
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -168,7 +168,7 @@ class DetailSalaryView extends GetView {
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -178,7 +178,7 @@ class DetailSalaryView extends GetView {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Denda Tidak Check-In',
+                                'Denda Tidak Check-In / Out',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -188,35 +188,9 @@ class DetailSalaryView extends GetView {
                               Text(
                                 "-${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.checkoutFine ?? 0, 2)}",
                                 style: GoogleFonts.nunitoSans(
-                                  color: Color(0xffFF5B5B),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Denda Tidak Check-Out',
-                                style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                CurrencyFormat.convertToIdr(
-                                    detailController.listSalaryById.value
-                                            .checkoutFine ??
-                                        0,
-                                    2),
-                                style: GoogleFonts.nunitoSans(
-                                  color: Color(0xff666666),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -242,7 +216,7 @@ class DetailSalaryView extends GetView {
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -264,7 +238,7 @@ class DetailSalaryView extends GetView {
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -286,7 +260,7 @@ class DetailSalaryView extends GetView {
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -310,7 +284,7 @@ class DetailSalaryView extends GetView {
                                         0,
                                     2),
                                 style: GoogleFonts.nunitoSans(
-                                  color: Color(0xff00E23F),
+                                  color: Color(0xff666666),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
