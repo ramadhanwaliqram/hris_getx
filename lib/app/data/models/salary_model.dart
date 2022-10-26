@@ -1,19 +1,18 @@
 // To parse this JSON data, do
 //
-//     final leaveHistoryModel = leaveHistoryModelFromJson(jsonString);
+//     final salaryModel = salaryModelFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:get/get.dart';
 
-LeaveHistoryModel leaveHistoryModelFromJson(String str) =>
-    LeaveHistoryModel.fromJson(json.decode(str));
+SalaryModel salaryModelFromJson(String str) =>
+    SalaryModel.fromJson(json.decode(str));
 
-String leaveHistoryModelToJson(LeaveHistoryModel data) =>
-    json.encode(data.toJson());
+String salaryModelToJson(SalaryModel data) => json.encode(data.toJson());
 
-class LeaveHistoryModel {
-  LeaveHistoryModel({
+class SalaryModel {
+  SalaryModel({
     this.currentPage,
     this.data,
     this.firstPageUrl,
@@ -30,7 +29,7 @@ class LeaveHistoryModel {
   });
 
   int? currentPage;
-  List<LeaveHistoryModelData>? data;
+  List<SalaryModelData>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -43,18 +42,15 @@ class LeaveHistoryModel {
   int? to;
   int? total;
 
-  factory LeaveHistoryModel.fromJson(Map<String, dynamic>? json) =>
-      LeaveHistoryModel(
+  factory SalaryModel.fromJson(Map<String, dynamic>? json) => SalaryModel(
         currentPage: json?["current_page"],
-        data: List<LeaveHistoryModelData>.from(
-            json?["data"].map((x) => LeaveHistoryModelData.fromJson(x))),
+        data: List<SalaryModelData>.from(
+            json?["data"].map((x) => SalaryModelData.fromJson(x))),
         firstPageUrl: json?["first_page_url"],
         from: json?["from"],
         lastPage: json?["last_page"],
         lastPageUrl: json?["last_page_url"],
-        links: json?["links"] == null
-            ? null
-            : List<Link>.from(json?["links"].map((x) => Link.fromJson(x))),
+        links: List<Link>.from(json?["links"].map((x) => Link.fromJson(x))),
         nextPageUrl: json?["next_page_url"],
         path: json?["path"],
         perPage: json?["per_page"],
@@ -80,8 +76,8 @@ class LeaveHistoryModel {
       };
 }
 
-class LeaveHistoryModelData {
-  LeaveHistoryModelData({
+class SalaryModelData {
+  SalaryModelData({
     this.year,
     this.expanded,
     this.data,
@@ -91,8 +87,8 @@ class LeaveHistoryModelData {
   RxBool? expanded;
   List<Data>? data;
 
-  factory LeaveHistoryModelData.fromJson(Map<String, dynamic>? json) =>
-      LeaveHistoryModelData(
+  factory SalaryModelData.fromJson(Map<String, dynamic>? json) =>
+      SalaryModelData(
         year: json?["year"],
         expanded: false.obs,
         data: List<Data>.from(json?["data"].map((x) => Data.fromJson(x))),
@@ -108,32 +104,24 @@ class LeaveHistoryModelData {
 class Data {
   Data({
     this.id,
-    this.start,
-    this.end,
-    this.status,
-    this.createdAt,
+    this.period,
+    this.total,
   });
 
   int? id;
-  String? start;
-  String? end;
-  String? status;
-  String? createdAt;
+  String? period;
+  String? total;
 
   factory Data.fromJson(Map<String, dynamic>? json) => Data(
         id: json?["id"],
-        start: json?["start"],
-        end: json?["end"],
-        status: json?["status"],
-        createdAt: json?["created_at"],
+        period: json?["period"],
+        total: json?["total"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "start": start,
-        "end": end,
-        "status": status,
-        "created_at": createdAt,
+        "period": period,
+        "total": total,
       };
 }
 

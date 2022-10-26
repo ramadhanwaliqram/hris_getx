@@ -112,7 +112,7 @@ class Summary {
 
   factory Summary.fromJson(Map<String, dynamic>? json) => Summary(
         present: json?["present"],
-        userLate: json?["userLate"],
+        userLate: json?["late"],
         notCheck: json?["not_check"],
         leave: json?["leave"],
         sick: json?["sick"],

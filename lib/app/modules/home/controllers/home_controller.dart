@@ -17,8 +17,6 @@ class HomeController extends GetxController with StateMixin {
   final String userToken = GetStorage().read('access_token');
 
   final dayNow = DateFormat('EEEE, d MMM, ' 'yyyy').format(DateTime.now());
-  final monthNow = DateFormat('M').format(DateTime.now());
-  final yearNow = DateFormat('yyyy').format(DateTime.now());
   final timeIn =
       DateFormat('Hm').format(DateTime.now()).toString().replaceAll('.', ':');
   final timeNow = DateFormat('jm').format(DateTime.now());
@@ -50,6 +48,9 @@ class HomeController extends GetxController with StateMixin {
 
   final todayAttendance = TodayAttendanceModel().obs;
   final summaryAttendance = AttendanceModel().obs;
+
+  RxString monthNow = '${DateFormat('M').format(DateTime.now())}'.obs;
+  RxString yearNow = '${DateFormat('yyyy').format(DateTime.now())}'.obs;
 
   @override
   void onInit() {
@@ -134,8 +135,6 @@ class HomeController extends GetxController with StateMixin {
     }).catchError((error) {
       return error;
     });
-
-    print(response.data);
 
     return summaryAttendance.value = AttendanceModel.fromJson(response.data);
   }

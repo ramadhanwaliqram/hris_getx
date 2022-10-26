@@ -12,6 +12,7 @@ abstract class Routes {
   static const APLY_LEAVE = _Paths.APLY_LEAVE;
   static const DETAIL_LEAVE_HISTORY = _Paths.DETAIL_LEAVE_HISTORY;
   static const SALARY = _Paths.SALARY;
+  static const SETTINGS = _Paths.SETTINGS;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const APLY_LEAVE = '/aply-leave';
   static const DETAIL_LEAVE_HISTORY = '/detail-leave-history';
   static const SALARY = '/salary';
+  static const SETTINGS = '/settings';
 }

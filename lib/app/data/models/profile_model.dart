@@ -17,6 +17,7 @@ class ProfileModel {
     this.birth,
     this.gender,
     this.phoneNumber,
+    this.profilePicture,
     this.address,
     this.department,
   });
@@ -27,6 +28,7 @@ class ProfileModel {
   String? birth;
   String? gender;
   String? phoneNumber;
+  dynamic profilePicture;
   String? address;
   String? department;
 
@@ -37,6 +39,7 @@ class ProfileModel {
         birth: json?["birth"],
         gender: json?["gender"],
         phoneNumber: json?["phone_number"],
+        profilePicture: json?["profile_picture"],
         address: json?["address"],
         department: json?["department"],
       );
@@ -48,6 +51,7 @@ class ProfileModel {
         "birth": birth,
         "gender": gender,
         "phone_number": phoneNumber,
+        "profile_picture": profilePicture,
         "address": address,
         "department": department,
       };

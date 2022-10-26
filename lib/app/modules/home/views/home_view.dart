@@ -49,7 +49,9 @@ class HomeView extends GetView<HomeController> {
                   // ),
                   child: InkWell(
                     borderRadius: new BorderRadius.circular(50),
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(Routes.SETTINGS);
+                    },
                     child: Container(
                       width: 40,
                       height: 40,
@@ -114,181 +116,7 @@ class HomeView extends GetView<HomeController> {
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),
-              FutureBuilder(
-                future: homeController.getAttendance(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Hadir',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '${homeController.summaryAttendance.value.data?.summary?.present ?? '0'} Hari',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Terlambat masuk',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '${homeController.summaryAttendance.value.data?.summary?.userLate ?? '0'} Hari',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Tidak check in / out',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '${homeController.summaryAttendance.value.data?.summary?.notCheck ?? '0'} Hari',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Cuti',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '${homeController.summaryAttendance.value.data?.summary?.leave ?? '0'} Hari',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Sakit',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '${homeController.summaryAttendance.value.data?.summary?.sick ?? '0'} Hari',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Alfa',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '${homeController.summaryAttendance.value.data?.summary?.absent ?? '0'} Hari',
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  return Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 7,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SkeletonLine(
-                                style: SkeletonLineStyle(
-                                  height: 12,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              SkeletonLine(
-                                style: SkeletonLineStyle(
-                                  height: 12,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+              _summaryAttendance(homeController: homeController),
             ],
           ),
         ),
@@ -394,6 +222,196 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
+class _summaryAttendance extends StatelessWidget {
+  const _summaryAttendance({
+    Key? key,
+    required this.homeController,
+  }) : super(key: key);
+
+  final HomeController homeController;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: homeController.getAttendance(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Obx(
+            () => Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Hadir',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${homeController.summaryAttendance.value.data?.summary?.present ?? '0'} Hari',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Terlambat masuk',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${homeController.summaryAttendance.value.data?.summary?.userLate ?? '0'} Hari',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Tidak check in / out',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${homeController.summaryAttendance.value.data?.summary?.notCheck ?? '0'} Hari',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Cuti',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${homeController.summaryAttendance.value.data?.summary?.leave ?? '0'} Hari',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Sakit',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${homeController.summaryAttendance.value.data?.summary?.sick ?? '0'} Hari',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Alfa',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '${homeController.summaryAttendance.value.data?.summary?.absent ?? '0'} Hari',
+                      style: GoogleFonts.nunitoSans(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+              ],
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+        return Container(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: 7,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SkeletonLine(
+                      style: SkeletonLineStyle(
+                        height: 12,
+                        width: MediaQuery.of(context).size.width / 3,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    SkeletonLine(
+                      style: SkeletonLineStyle(
+                        height: 12,
+                        width: MediaQuery.of(context).size.width / 3,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _attendanceHistory extends StatelessWidget {
   const _attendanceHistory({
     Key? key,
@@ -433,6 +451,13 @@ class _attendanceHistory extends StatelessWidget {
                     firstDay: DateTime.utc(2015, 10, 16),
                     lastDay: DateTime.utc(2030, 3, 14),
                     locale: 'id_ID',
+                    onPageChanged: (focusedDay) {
+                      homeController.monthNow.value =
+                          DateFormat('M').format(focusedDay).toString();
+                      homeController.yearNow.value =
+                          DateFormat('yyyy').format(focusedDay).toString();
+                      homeController.getAttendance();
+                    },
                     focusedDay: homeController.selectedDay.value,
                     selectedDayPredicate: (day) =>
                         isSameDay(day, homeController.selectedDay.value),
@@ -683,7 +708,8 @@ class _buttonAbsent extends StatelessWidget {
             shadowColor: Colors.transparent,
           ),
           onPressed: jamSekarangs.isBefore(jamPulangs) == true &&
-                  homeController.todayAttendance.value.checkIn != '-'
+                      homeController.todayAttendance.value.checkIn != '-' ||
+                  homeController.todayAttendance.value.checkOut != '-'
               ? null
               : () {
                   if (jamSekarangs.isAfter(jamPulangs)) {
@@ -1048,16 +1074,38 @@ class _infoProfile extends StatelessWidget {
           () => Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // Container(
+              //   padding: EdgeInsets.all(16),
+              //   decoration: BoxDecoration(
+              //     color: Color(0xfff2f2f2),
+              //     borderRadius: BorderRadius.circular(16),
+              //   ),
+              //   child: FadeInImage(
+              //     placeholder: AssetImage('assets/images/no-image.jpg'),
+              //     image:
+              //         NetworkImage('${homeController.profiles.profilePicture}'),
+              //     fit: BoxFit.cover,
+              //     imageErrorBuilder: (context, error, stackTrace) {
+              //       return Image.asset('assets/images/no-image.jpg');
+              //     },
+              //     width: 24,
+              //     height: 24,
+              //   ),
+              // ),
               Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Color(0xfff2f2f2),
+                width: 56,
+                height: 56,
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                ),
-                child: Image.asset(
-                  'assets/icons/user.png',
-                  width: 24,
-                  height: 24,
+                  child: FadeInImage(
+                    placeholder: AssetImage('assets/images/no-image.jpg'),
+                    image: NetworkImage(
+                        '${homeController.profiles.profilePicture}'),
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/images/no-image.jpg');
+                    },
+                  ),
                 ),
               ),
               SizedBox(width: 16),

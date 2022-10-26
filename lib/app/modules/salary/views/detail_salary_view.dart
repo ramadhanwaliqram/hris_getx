@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hris_getx/app/modules/paid_leave/controllers/paid_leave_controller.dart';
+import 'package:hris_getx/app/modules/salary/controllers/salary_controller.dart';
 import 'package:skeletons/skeletons.dart';
+import '../../../data/currency_format.dart';
 import '../../../routes/app_pages.dart';
 
-class DetailLeaveHistoryView extends GetView {
-  const DetailLeaveHistoryView({this.id, Key? key}) : super(key: key);
+class DetailSalaryView extends GetView {
+  const DetailSalaryView({this.id, Key? key}) : super(key: key);
   final int? id;
   @override
   Widget build(BuildContext context) {
-    final detailController = PaidLeaveController();
+    final detailController = Get.put(SalaryController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -20,7 +21,7 @@ class DetailLeaveHistoryView extends GetView {
           borderRadius: BorderRadius.circular(50),
           child: Icon(Icons.arrow_back_ios_new_rounded, size: 16),
           onTap: () {
-            Get.offAndToNamed(Routes.PAID_LEAVE);
+            Get.offAndToNamed(Routes.SALARY);
           },
         ),
       ),
@@ -45,25 +46,9 @@ class DetailLeaveHistoryView extends GetView {
                 ),
                 SizedBox(height: 32),
                 FutureBuilder(
-                  future: detailController.getLeaveHistoryById(id),
+                  future: detailController.getSalaryById(id),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      var leaveStatus =
-                          detailController.listHistoriesById.value.status;
-                      Color? leaveColor;
-
-                      if (leaveStatus == 'pending') {
-                        leaveStatus = 'Diajukan';
-                        leaveColor = Color(0xffFFB000);
-                      }
-                      if (leaveStatus == 'approved') {
-                        leaveStatus = 'Disetujui';
-                        leaveColor = Color(0xff00E23F);
-                      }
-                      if (leaveStatus == 'reject') {
-                        leaveStatus = 'Ditolak';
-                        leaveColor = Color(0xffFF5B5B);
-                      }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -71,7 +56,7 @@ class DetailLeaveHistoryView extends GetView {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Pengajuan Cuti',
+                                'Gaji Pokok',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -79,7 +64,33 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.start ?? '-'}',
+                                "+ ${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.salary ?? 0, 2)}",
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff00E23F),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Bonus',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                CurrencyFormat.convertToIdr(
+                                    detailController
+                                            .listSalaryById.value.reward ??
+                                        0,
+                                    2),
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -93,7 +104,7 @@ class DetailLeaveHistoryView extends GetView {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Mulai Cuti',
+                                'Penambahan Lainnya',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -101,7 +112,33 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.start ?? '-'}',
+                                "+ ${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.additionalSalary ?? 0, 2)}",
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff00E23F),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Denda Keterlambatan',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                CurrencyFormat.convertToIdr(
+                                    detailController
+                                            .listSalaryById.value.lateCharge ??
+                                        0,
+                                    2),
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -115,7 +152,7 @@ class DetailLeaveHistoryView extends GetView {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Selesai Cuti',
+                                'Denda Alfa',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -123,29 +160,11 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.end ?? '-'}',
-                                style: GoogleFonts.nunitoSans(
-                                  color: Color(0xff666666),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Total Hari',
-                                style: GoogleFonts.nunitoSans(
-                                  color: Color(0xff666666),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                '${detailController.listHistoriesById.value.totalDays ?? '-'}',
+                                CurrencyFormat.convertToIdr(
+                                    detailController.listSalaryById.value
+                                            .attendanceFine ??
+                                        0,
+                                    2),
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -159,7 +178,7 @@ class DetailLeaveHistoryView extends GetView {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Alasan',
+                                'Denda Tidak Check-In',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -167,7 +186,33 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.reasons ?? '-'}',
+                                "-${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.checkoutFine ?? 0, 2)}",
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xffFF5B5B),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Denda Tidak Check-Out',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                CurrencyFormat.convertToIdr(
+                                    detailController.listSalaryById.value
+                                            .checkoutFine ??
+                                        0,
+                                    2),
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -181,7 +226,7 @@ class DetailLeaveHistoryView extends GetView {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Status',
+                                'Pengurangan Lainnya',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -189,31 +234,13 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.status ?? '-'}',
-                                style: GoogleFonts.nunitoSans(
-                                  color: leaveColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Alasan Penolakan',
+                                CurrencyFormat.convertToIdr(
+                                    detailController.listSalaryById.value
+                                            .otherSalaryDeductions ??
+                                        0,
+                                    2),
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                '${detailController.listHistoriesById.value.reasonRejected ?? '-'}',
-                                style: GoogleFonts.nunitoSans(
-                                  color: leaveColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -221,43 +248,89 @@ class DetailLeaveHistoryView extends GetView {
                             ],
                           ),
                           SizedBox(height: 32),
-                          Center(
-                            child: Text(
-                              'Diketahui Oleh',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Ket. Penambahan',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              width: 200,
-                              height: 200,
-                              child: FadeInImage(
-                                placeholder:
-                                    AssetImage('assets/images/no-image.jpg'),
-                                image: NetworkImage(
-                                    '${detailController.listHistoriesById.value.chiefSignature}'),
-                                fit: BoxFit.cover,
-                                imageErrorBuilder:
-                                    (context, error, stackTrace) {
-                                  return Image.asset(
-                                      'assets/images/no-image.jpg');
-                                },
+                              Text(
+                                "${detailController.listSalaryById.value.additionalInformation ?? '-'}",
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Ket. Pengurangan',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "${detailController.listSalaryById.value.reductionInformation ?? '-'}",
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total Keseluruhan',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff666666),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                CurrencyFormat.convertToIdr(
+                                    detailController
+                                            .listSalaryById.value.total ??
+                                        0,
+                                    2),
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff00E23F),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 67),
                           Center(
-                            child: Text(
-                              '${detailController.listHistoriesById.value.assignBy ?? '-'}',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.nunitoSans(
-                                color: Color(0xff666666),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                            child: TextButton(
+                              onPressed: () async {
+                                await detailController
+                                    .launchPDFToBrowser(id!.toInt());
+                              },
+                              child: Text(
+                                'Ekspor ke PDF',
+                                style: GoogleFonts.nunitoSans(
+                                  color: Color(0xff009EFF),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),

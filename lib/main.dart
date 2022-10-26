@@ -16,7 +16,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Application",
+      title: "HRIS Stream",
       initialRoute: userToken != null ? Routes.HOME : Routes.LOGIN,
       getPages: AppPages.routes,
     ),

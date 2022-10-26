@@ -85,6 +85,19 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 controller.listHistories.value = snapshot.data!;
+                print("DATA BANG ${controller.listHistories.value.data}");
+                if (controller.listHistories.value.data!.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'Data cuti belum ada.',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xff303030),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  );
+                }
                 return Obx(
                   () => ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -108,10 +121,10 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
                                     ),
                                   ),
                                   Obx(
-                                    () => Icon(controller
-                                            .customTileExpanded.value
-                                        ? Icons.keyboard_arrow_up_rounded
-                                        : Icons.keyboard_arrow_down_rounded),
+                                    () => Icon(controller.listHistories.value
+                                            .data![index].expanded!.value
+                                        ? Icons.keyboard_arrow_down_rounded
+                                        : Icons.keyboard_arrow_up_rounded),
                                   ),
                                 ],
                               ),

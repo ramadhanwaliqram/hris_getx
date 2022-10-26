@@ -1,18 +1,21 @@
 import 'package:get/get.dart';
-import 'package:hris_getx/app/modules/forget_password/views/reset_password_view.dart';
-import 'package:hris_getx/app/modules/paid_leave/views/aply_leave_view.dart';
-import 'package:hris_getx/app/modules/paid_leave/views/detail_leave_history_view.dart';
+
 import '../modules/forget_password/bindings/forget_password_binding.dart';
 import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/forget_password/views/otp_view.dart';
+import '../modules/forget_password/views/reset_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/paid_leave/bindings/paid_leave_binding.dart';
+import '../modules/paid_leave/views/aply_leave_view.dart';
+import '../modules/paid_leave/views/detail_leave_history_view.dart';
 import '../modules/paid_leave/views/paid_leave_view.dart';
 import '../modules/salary/bindings/salary_binding.dart';
 import '../modules/salary/views/salary_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
 
 part 'app_routes.dart';
 
@@ -66,6 +69,11 @@ class AppPages {
       name: _Paths.SALARY,
       page: () => const SalaryView(),
       binding: SalaryBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTINGS,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
   ];
 }

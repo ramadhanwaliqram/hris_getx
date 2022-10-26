@@ -18,6 +18,7 @@ class LeaveHistoryByIdModel {
     this.reasons,
     this.status,
     this.reasonRejected,
+    this.assignBy,
     this.chiefSignature,
   });
 
@@ -27,6 +28,7 @@ class LeaveHistoryByIdModel {
   String? reasons;
   String? status;
   dynamic reasonRejected;
+  String? assignBy;
   String? chiefSignature;
 
   factory LeaveHistoryByIdModel.fromJson(Map<String, dynamic>? json) =>
@@ -37,6 +39,7 @@ class LeaveHistoryByIdModel {
         reasons: json?["reasons"],
         status: json?["status"],
         reasonRejected: json?["reason_rejected"],
+        assignBy: json?["assign_by"],
         chiefSignature: json?["chief_signature"],
       );
 
@@ -47,6 +50,7 @@ class LeaveHistoryByIdModel {
         "reasons": reasons,
         "status": status,
         "reason_rejected": reasonRejected,
+        "assign_by": assignBy,
         "chief_signature": chiefSignature,
       };
 }
