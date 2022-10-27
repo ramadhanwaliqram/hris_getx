@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hris_getx/app/modules/login/controllers/login_controller.dart';
+// import 'package:hris_getx/app/modules/login/controllers/login_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -16,7 +16,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final homeController = Get.put(HomeController());
-    final loginController = Get.put(LoginController());
+    // final loginController = Get.put(LoginController());
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
     final double deviceWidth = mediaQueryData.size.width;
     final double padding = 16;
@@ -64,28 +64,28 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                 ),
-                Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(50),
-                  // ),
-                  child: InkWell(
-                    borderRadius: new BorderRadius.circular(50),
-                    onTap: () async {
-                      await _logoutController(
-                          context, loginController, homeController);
-                    },
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/icons/logout.png',
-                        width: 16,
-                        height: 16,
-                      ),
-                    ),
-                  ),
-                ),
+                // Material(
+                //   color: Colors.transparent,
+                //   borderRadius: BorderRadius.circular(50),
+                //   // ),
+                //   child: InkWell(
+                //     borderRadius: new BorderRadius.circular(50),
+                //     onTap: () async {
+                //       await _logoutController(
+                //           context, loginController, homeController);
+                //     },
+                //     child: Container(
+                //       width: 40,
+                //       height: 40,
+                //       alignment: Alignment.center,
+                //       child: Image.asset(
+                //         'assets/icons/logout.png',
+                //         width: 16,
+                //         height: 16,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ],
@@ -124,102 +124,102 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  _logoutController(BuildContext context, LoginController loginController,
-      HomeController homeController) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: Text(
-          'Konfirmasi',
-          style: GoogleFonts.montserrat(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        content: RichText(
-          text: TextSpan(
-            text: 'Apa kamu yakin ingin keluar akun ',
-            style: GoogleFonts.nunitoSans(
-              color: Color(0xff666666),
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                text: '${homeController.profiles.email}',
-                style: GoogleFonts.nunitoSans(
-                    fontSize: 12, fontWeight: FontWeight.w700),
-              ),
-              TextSpan(
-                text: ' ?',
-                style: GoogleFonts.nunitoSans(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-        ),
-        actionsAlignment: MainAxisAlignment.spaceEvenly,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.back(closeOverlays: true);
-            },
-            child: Text(
-              'Batal',
-              style: GoogleFonts.nunitoSans(
-                color: Color(0xffB0BEC4),
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () async {
-              Get.back(closeOverlays: true);
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    scrollable: true,
-                    content: Row(
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(width: 14),
-                        Text(
-                          'Loading...',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-              Future.delayed(Duration(seconds: 2), () async {
-                await loginController.logout();
-              });
-            },
-            child: Text(
-              'Keluar',
-              style: GoogleFonts.nunitoSans(
-                color: Color(0xffED213A),
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // _logoutController(BuildContext context, LoginController loginController,
+  //     HomeController homeController) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) => AlertDialog(
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(16),
+  //       ),
+  //       title: Text(
+  //         'Konfirmasi',
+  //         style: GoogleFonts.montserrat(
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.w700,
+  //         ),
+  //       ),
+  //       content: RichText(
+  //         text: TextSpan(
+  //           text: 'Apa kamu yakin ingin keluar akun ',
+  //           style: GoogleFonts.nunitoSans(
+  //             color: Color(0xff666666),
+  //             fontSize: 12,
+  //             fontWeight: FontWeight.w400,
+  //           ),
+  //           children: <TextSpan>[
+  //             TextSpan(
+  //               text: '${homeController.profiles.email}',
+  //               style: GoogleFonts.nunitoSans(
+  //                   fontSize: 12, fontWeight: FontWeight.w700),
+  //             ),
+  //             TextSpan(
+  //               text: ' ?',
+  //               style: GoogleFonts.nunitoSans(
+  //                 fontSize: 12,
+  //                 fontWeight: FontWeight.w400,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       actionsAlignment: MainAxisAlignment.spaceEvenly,
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () {
+  //             Get.back(closeOverlays: true);
+  //           },
+  //           child: Text(
+  //             'Batal',
+  //             style: GoogleFonts.nunitoSans(
+  //               color: Color(0xffB0BEC4),
+  //               fontSize: 12,
+  //               fontWeight: FontWeight.w700,
+  //             ),
+  //           ),
+  //         ),
+  //         TextButton(
+  //           onPressed: () async {
+  //             Get.back(closeOverlays: true);
+  //             showDialog(
+  //               context: context,
+  //               builder: (context) {
+  //                 return AlertDialog(
+  //                   scrollable: true,
+  //                   content: Row(
+  //                     children: [
+  //                       CircularProgressIndicator(),
+  //                       SizedBox(width: 14),
+  //                       Text(
+  //                         'Loading...',
+  //                         textAlign: TextAlign.center,
+  //                         style: TextStyle(
+  //                           fontSize: 16,
+  //                           fontWeight: FontWeight.w400,
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 );
+  //               },
+  //             );
+  //             Future.delayed(Duration(seconds: 2), () async {
+  //               await loginController.logout();
+  //             });
+  //           },
+  //           child: Text(
+  //             'Keluar',
+  //             style: GoogleFonts.nunitoSans(
+  //               color: Color(0xffED213A),
+  //               fontSize: 12,
+  //               fontWeight: FontWeight.w700,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 class _summaryAttendance extends StatelessWidget {
@@ -811,7 +811,7 @@ class _absentInfo extends StatelessWidget {
                       Text(
                         'Jam anda masuk',
                         style: GoogleFonts.nunitoSans(
-                          color: Color(0xff303030),
+                          color: Color(0xffc4c4c4),
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                         ),
@@ -845,7 +845,7 @@ class _absentInfo extends StatelessWidget {
                       Text(
                         'Jam anda pulang',
                         style: GoogleFonts.nunitoSans(
-                          color: Color(0xff303030),
+                          color: Color(0xffc4c4c4),
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                         ),

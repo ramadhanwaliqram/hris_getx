@@ -186,7 +186,7 @@ class DetailSalaryView extends GetView {
                                 ),
                               ),
                               Text(
-                                "-${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.checkoutFine ?? 0, 2)}",
+                                "${CurrencyFormat.convertToIdr(detailController.listSalaryById.value.checkoutFine ?? 0, 2)}",
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,

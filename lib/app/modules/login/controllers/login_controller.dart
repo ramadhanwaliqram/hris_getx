@@ -49,6 +49,9 @@ class LoginController extends GetxController {
       if (e.response!.statusCode == 400) {
         return throw Exception('Username atau password salah!');
       }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
+      }
     }
   }
 

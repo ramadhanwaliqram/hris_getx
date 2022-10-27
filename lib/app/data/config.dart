@@ -19,3 +19,4 @@ final String updateProfileUrl = '${base_url}/api/profile';
 final String sendOTPUrl = '${base_url}/api/send-otp';
 final String verifOTPUrl = '${base_url}/api/otp-verification';
 final String resetPasswordUrl = '${base_url}/api/reset-password';
+final String changePasswordUrl = '${base_url}/api/change-password';

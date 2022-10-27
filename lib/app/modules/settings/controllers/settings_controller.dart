@@ -26,6 +26,10 @@ class SettingsController extends GetxController with StateMixin {
 
   final TextEditingController phoneNumberC = TextEditingController();
   final TextEditingController addressC = TextEditingController();
+  final TextEditingController oldPasswordC = TextEditingController();
+  final TextEditingController newPasswordC = TextEditingController();
+  final TextEditingController confirmastionNewPasswordC =
+      TextEditingController();
 
   RxBool handleChangePhoneNumber = true.obs;
   RxBool handleChangeAddress = true.obs;
@@ -41,6 +45,43 @@ class SettingsController extends GetxController with StateMixin {
 
   final _profile = ProfileModel().obs;
   ProfileModel get profiles => _profile.value;
+
+  void clearTextField() {
+    oldPasswordC.clear();
+    newPasswordC.clear();
+    confirmastionNewPasswordC.clear();
+  }
+
+  Future<dynamic> changePassword({
+    String? old_password,
+    String? new_password,
+    String? new_password_confirmation,
+  }) async {
+    try {
+      // dio.options.headers['Authorization'] = "Bearer $token";
+      dio.options.headers['Accept'] = 'application/json';
+      dio.options.headers["Content-Type"] = "multipart/form-data";
+
+      FormData formData = await FormData.fromMap({
+        'old_password': oldPasswordC.text,
+        'new_password': newPasswordC.text,
+        'new_password_confirmation': confirmastionNewPasswordC.text,
+      });
+
+      Response response = await dio.post(changePasswordUrl, data: formData);
+
+      return response.data;
+    } on DioError catch (e) {
+      print(e.response!.data['errors']);
+      if (e.response!.statusCode == 400) {
+        return throw Exception('${e.response!.data['message']}');
+      }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
+      }
+      return throw Exception('${e}');
+    }
+  }
 
   Future<void> getImage(ImageSource imageSource) async {
     final pickedFile =
@@ -92,6 +133,9 @@ class SettingsController extends GetxController with StateMixin {
     } on DioError catch (e) {
       if (e.response!.statusCode == 400) {
         return throw Exception('${e.response!.data['message']}');
+      }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
       }
       return throw Exception('${e}');
     }

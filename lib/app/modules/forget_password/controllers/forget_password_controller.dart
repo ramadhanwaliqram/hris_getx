@@ -59,9 +59,6 @@ class ForgetPasswordController extends GetxController {
     String? new_password,
     String? new_password_confirmation,
   }) async {
-    print(token);
-    print(newPassC.text);
-    print(confirmNewPassC.text);
     try {
       // dio.options.headers['Authorization'] = "Bearer $token";
       dio.options.headers['Accept'] = 'application/json';
@@ -74,13 +71,15 @@ class ForgetPasswordController extends GetxController {
       });
 
       Response response = await dio.post(resetPasswordUrl, data: formData);
-      print(response.data);
 
       return response.data;
     } on DioError catch (e) {
       print(e.response!.data['errors']);
       if (e.response!.statusCode == 400) {
         return throw Exception('${e.response!.data['message']}');
+      }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
       }
       return throw Exception('${e}');
     }
@@ -105,6 +104,9 @@ class ForgetPasswordController extends GetxController {
       if (e.response!.statusCode == 400) {
         return throw Exception('${e.response!.data['message']}');
       }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
+      }
       return throw Exception('${e}');
     }
   }
@@ -125,6 +127,9 @@ class ForgetPasswordController extends GetxController {
     } on DioError catch (e) {
       if (e.response!.statusCode == 400) {
         return throw Exception('${e.response!.data['message']}');
+      }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
       }
       return throw Exception('${e}');
     }

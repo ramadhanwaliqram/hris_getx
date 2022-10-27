@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hris_getx/app/modules/login/controllers/login_controller.dart';
+import 'package:hris_getx/app/modules/settings/views/change_password_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skeletons/skeletons.dart';
 import '../../../data/theme.dart';
@@ -15,6 +17,7 @@ class SettingsView extends GetView<SettingsController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(SettingsController());
+    final loginController = Get.put(LoginController());
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
@@ -49,20 +52,10 @@ class SettingsView extends GetView<SettingsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Pengaturan Akun",
+                        "Profil",
                         style: GoogleFonts.montserrat(
-                          fontSize: 24,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xff303030),
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "Anda bisa mengubah data diri di halaman ini",
-                        textAlign: TextAlign.justify,
-                        style: GoogleFonts.nunitoSans(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
                           color: Color(0xff303030),
                         ),
                       ),
@@ -500,7 +493,7 @@ class SettingsView extends GetView<SettingsController> {
                                           .updateProfile()
                                           .then(
                                             (value) => showSnackbarCustom(
-                                                'Berhasil ubah No. Telepon'),
+                                                'Berhasil ubah No. Telepon ✔'),
                                           )
                                           .catchError(
                                             (error) => showSnackbarCustom(
@@ -574,7 +567,7 @@ class SettingsView extends GetView<SettingsController> {
                                           .updateProfile()
                                           .then(
                                             (value) => showSnackbarCustom(
-                                                'Berhasil ubah Alamat'),
+                                                'Berhasil ubah Alamat ✔'),
                                           )
                                           .catchError(
                                             (error) => showSnackbarCustom(
@@ -615,6 +608,160 @@ class SettingsView extends GetView<SettingsController> {
                                       fontWeight: FontWeight.w700,
                                       color: Color(0xff009EFF),
                                     ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 40),
+                              Text(
+                                "Akun",
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff303030),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                'Email',
+                                style: GoogleFonts.nunitoSans(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xffc4c4c4),
+                                ),
+                              ),
+                              Text(
+                                '${controller.profiles.email}',
+                                style: GoogleFonts.nunitoSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff4C6493),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextButton(
+                                onPressed: () {
+                                  Get.to(() => ChangePasswordView());
+                                },
+                                child: Text(
+                                  'Ubah Password',
+                                  style: GoogleFonts.nunitoSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff009EFF),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      title: Text(
+                                        'Konfirmasi',
+                                        style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      content: RichText(
+                                        text: TextSpan(
+                                          text:
+                                              'Apa kamu yakin ingin keluar akun ',
+                                          style: GoogleFonts.nunitoSans(
+                                            color: Color(0xff666666),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text:
+                                                  '${controller.profiles.email}',
+                                              style: GoogleFonts.nunitoSans(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            TextSpan(
+                                              text: ' ?',
+                                              style: GoogleFonts.nunitoSans(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actionsAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back(closeOverlays: true);
+                                          },
+                                          child: Text(
+                                            'Batal',
+                                            style: GoogleFonts.nunitoSans(
+                                              color: Color(0xffB0BEC4),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            Get.back(closeOverlays: true);
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  scrollable: true,
+                                                  content: Row(
+                                                    children: [
+                                                      CircularProgressIndicator(),
+                                                      SizedBox(width: 14),
+                                                      Text(
+                                                        'Loading...',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                            Future.delayed(Duration(seconds: 2),
+                                                () async {
+                                              await loginController.logout();
+                                            });
+                                          },
+                                          child: Text(
+                                            'Keluar',
+                                            style: GoogleFonts.nunitoSans(
+                                              color: Color(0xffED213A),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Logout',
+                                  style: GoogleFonts.nunitoSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff009EFF),
                                   ),
                                 ),
                               ),

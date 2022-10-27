@@ -171,6 +171,9 @@ class HomeController extends GetxController with StateMixin {
       if (e.response!.statusCode == 400) {
         return throw Exception('${e.response!.data['message']}');
       }
+      if (e.response!.statusCode == 500) {
+        return throw Exception('Terjadi Kesalahan Server');
+      }
       return throw Exception('Failed to load data');
     }
   }
