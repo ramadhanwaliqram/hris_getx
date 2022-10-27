@@ -53,7 +53,7 @@ class SalaryController extends GetxController {
       },
     ).catchError(
       (error) {
-        print(error.toString());
+        return throw Exception('Failed to load data');
       },
     );
 
@@ -75,7 +75,7 @@ class SalaryController extends GetxController {
       },
     ).catchError(
       (error) {
-        print(error.toString());
+        return throw Exception('Failed to load data');
       },
     );
 

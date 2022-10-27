@@ -79,6 +79,9 @@ class SettingsController extends GetxController with StateMixin {
       if (e.response!.statusCode == 500) {
         return throw Exception('Terjadi Kesalahan Server');
       }
+      if (e.response!.statusCode == 429) {
+        return throw Exception('Too many attemps');
+      }
       return throw Exception('${e}');
     }
   }
@@ -136,6 +139,9 @@ class SettingsController extends GetxController with StateMixin {
       }
       if (e.response!.statusCode == 500) {
         return throw Exception('Terjadi Kesalahan Server');
+      }
+      if (e.response!.statusCode == 429) {
+        return throw Exception('Too many attemps');
       }
       return throw Exception('${e}');
     }

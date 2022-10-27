@@ -12,6 +12,7 @@ String leaveHistoryByIdModelToJson(LeaveHistoryByIdModel data) =>
 
 class LeaveHistoryByIdModel {
   LeaveHistoryByIdModel({
+    this.createdAt,
     this.start,
     this.end,
     this.totalDays,
@@ -22,6 +23,7 @@ class LeaveHistoryByIdModel {
     this.chiefSignature,
   });
 
+  String? createdAt;
   String? start;
   String? end;
   int? totalDays;
@@ -33,6 +35,7 @@ class LeaveHistoryByIdModel {
 
   factory LeaveHistoryByIdModel.fromJson(Map<String, dynamic>? json) =>
       LeaveHistoryByIdModel(
+        createdAt: json?["created_at"],
         start: json?["start"],
         end: json?["end"],
         totalDays: json?["total_days"],
@@ -44,6 +47,7 @@ class LeaveHistoryByIdModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "created_at": createdAt,
         "start": start,
         "end": end,
         "total_days": totalDays,

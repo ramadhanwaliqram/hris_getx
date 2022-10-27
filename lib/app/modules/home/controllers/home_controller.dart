@@ -112,7 +112,7 @@ class HomeController extends GetxController with StateMixin {
     Response response = await dio.get(getAllAttendanceUrl).then((value) {
       return value;
     }).catchError((error) {
-      return error;
+      return throw Exception('Failed to load data');
     });
 
     isLoading.value = false;
@@ -133,7 +133,7 @@ class HomeController extends GetxController with StateMixin {
         await dio.post(getAttendanceUrl, data: formData).then((value) {
       return value;
     }).catchError((error) {
-      return error;
+      return throw Exception('Failed to load data');
     });
 
     return summaryAttendance.value = AttendanceModel.fromJson(response.data);
@@ -147,7 +147,7 @@ class HomeController extends GetxController with StateMixin {
     Response response = await dio.get(getTodayAttendanceUrl).then((value) {
       return value;
     }).catchError((error) {
-      return error;
+      return throw Exception('Failed to load data');
     });
 
     return todayAttendance.value = TodayAttendanceModel.fromJson(response.data);
@@ -173,6 +173,9 @@ class HomeController extends GetxController with StateMixin {
       }
       if (e.response!.statusCode == 500) {
         return throw Exception('Terjadi Kesalahan Server');
+      }
+      if (e.response!.statusCode == 429) {
+        return throw Exception('Too many attemps');
       }
       return throw Exception('Failed to load data');
     }

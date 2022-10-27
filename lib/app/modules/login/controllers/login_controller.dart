@@ -52,6 +52,9 @@ class LoginController extends GetxController {
       if (e.response!.statusCode == 500) {
         return throw Exception('Terjadi Kesalahan Server');
       }
+      if (e.response!.statusCode == 429) {
+        return throw Exception('Too many attemps');
+      }
     }
   }
 

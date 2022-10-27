@@ -62,7 +62,7 @@ class PaidLeaveController extends GetxController with StateMixin {
       },
     ).catchError(
       (error) {
-        print(error.toString());
+        return throw Exception('Failed to load data');
       },
     );
 
@@ -84,7 +84,7 @@ class PaidLeaveController extends GetxController with StateMixin {
       },
     ).catchError(
       (error) {
-        print(error.toString());
+        return throw Exception('Failed to load data');
       },
     );
 
@@ -127,6 +127,9 @@ class PaidLeaveController extends GetxController with StateMixin {
       if (e.response!.statusCode == 500) {
         return throw Exception('Terjadi Kesalahan Server');
       }
+      if (e.response!.statusCode == 429) {
+        return throw Exception('Too many attemps');
+      }
       return throw Exception('Failed to load data');
     }
   }
@@ -139,11 +142,8 @@ class PaidLeaveController extends GetxController with StateMixin {
 
     if (response.statusCode == 200) {
       return remLeave.value = response.data['remaining_leaves'];
-      // remainingLeave.value = response.data['remaining_leaves'];
-      // change(remainingLeaves, status: RxStatus.success());
     } else {
       return Future.error('Failed to load data');
-      // change(null, status: RxStatus.error());
     }
   }
 

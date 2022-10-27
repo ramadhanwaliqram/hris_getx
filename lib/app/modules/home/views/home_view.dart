@@ -451,12 +451,12 @@ class _attendanceHistory extends StatelessWidget {
                     firstDay: DateTime.utc(2015, 10, 16),
                     lastDay: DateTime.utc(2030, 3, 14),
                     locale: 'id_ID',
-                    onPageChanged: (focusedDay) {
+                    onPageChanged: (focusedDay) async {
                       homeController.monthNow.value =
                           DateFormat('M').format(focusedDay).toString();
                       homeController.yearNow.value =
                           DateFormat('yyyy').format(focusedDay).toString();
-                      homeController.getAttendance();
+                      await homeController.getAttendance();
                     },
                     focusedDay: homeController.selectedDay.value,
                     selectedDayPredicate: (day) =>
@@ -707,49 +707,51 @@ class _buttonAbsent extends StatelessWidget {
             // elevation: MaterialStateProperty.all(3),
             shadowColor: Colors.transparent,
           ),
-          onPressed: jamSekarangs.isBefore(jamPulangs) == true &&
-                      homeController.todayAttendance.value.checkIn != '-' ||
-                  homeController.todayAttendance.value.checkOut != '-'
-              ? null
-              : () {
-                  if (jamSekarangs.isAfter(jamPulangs)) {
-                    homeController.statusAtt.value = 'out';
-                  }
-                  if (jamSekarangs.isBefore(jamMasuks) ||
-                      jamSekarangs.isAfter(jamMasuks) &&
-                          jamSekarangs.isBefore(jamPulangs)) {
-                    homeController.statusAtt.value = 'in';
-                  }
+          // onPressed: jamSekarangs.isBefore(jamPulangs) == true &&
+          //             homeController.todayAttendance.value.checkIn != '-' ||
+          //         homeController.todayAttendance.value.checkOut != '-'
+          //     ? null
+          onPressed: () {
+            if (jamSekarangs.isAfter(jamPulangs) ||
+                homeController.todayAttendance.value.checkIn != '-') {
+              homeController.statusAtt.value = 'out';
+            }
+            if (jamSekarangs.isBefore(jamMasuks) ||
+                jamSekarangs.isAfter(jamMasuks) &&
+                    jamSekarangs.isBefore(jamPulangs) &&
+                    homeController.todayAttendance.value.checkIn == '-') {
+              homeController.statusAtt.value = 'in';
+            }
 
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => WillPopScope(
-                      onWillPop: () async => false,
-                      child: AlertDialog(
-                        scrollable: true,
-                        content: Row(
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(width: 14),
-                            Text('Loading...'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                  Future.delayed(Duration(seconds: 2), () async {
-                    homeController.assignAttendance().then((value) {
-                      Get.back(closeOverlays: true);
-                      showSnackbarCustom(
-                          'Berhasil absen ${homeController.statusAtt.value == 'in' ? 'masuk' : 'pulang'}');
-                      Get.offAndToNamed(Routes.HOME);
-                    }).catchError((error) {
-                      Get.back(closeOverlays: true);
-                      showSnackbarCustom(error.message.toString());
-                    });
-                  });
-                },
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  scrollable: true,
+                  content: Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 14),
+                      Text('Loading...'),
+                    ],
+                  ),
+                ),
+              ),
+            );
+            Future.delayed(Duration(seconds: 2), () async {
+              await homeController.assignAttendance().then((value) {
+                Get.back(closeOverlays: true);
+                showSnackbarCustom(
+                    'Berhasil absen ${homeController.statusAtt.value == 'in' ? 'masuk' : 'pulang'}');
+                Get.offAndToNamed(Routes.HOME);
+              }).catchError((error) {
+                Get.back(closeOverlays: true);
+                showSnackbarCustom(error.message.toString());
+              });
+            });
+          },
           child: Padding(
             padding: const EdgeInsets.only(
               top: 10,

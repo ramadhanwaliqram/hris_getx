@@ -56,7 +56,7 @@ class DetailLeaveHistoryView extends GetView {
                         leaveStatus = 'Diajukan';
                         leaveColor = Color(0xffFFB000);
                       }
-                      if (leaveStatus == 'approved') {
+                      if (leaveStatus == 'accept') {
                         leaveStatus = 'Disetujui';
                         leaveColor = Color(0xff00E23F);
                       }
@@ -79,7 +79,7 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.start ?? '-'}',
+                                '${detailController.listHistoriesById.value.createdAt ?? '-'}',
                                 style: GoogleFonts.nunitoSans(
                                   color: Color(0xff666666),
                                   fontSize: 12,
@@ -189,7 +189,7 @@ class DetailLeaveHistoryView extends GetView {
                                 ),
                               ),
                               Text(
-                                '${detailController.listHistoriesById.value.status ?? '-'}',
+                                '${leaveStatus ?? '-'}',
                                 style: GoogleFonts.nunitoSans(
                                   color: leaveColor,
                                   fontSize: 12,

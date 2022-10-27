@@ -761,7 +761,7 @@ class SettingsView extends GetView<SettingsController> {
                                   style: GoogleFonts.nunitoSans(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xff009EFF),
+                                    color: Color(0xff303030),
                                   ),
                                 ),
                               ),

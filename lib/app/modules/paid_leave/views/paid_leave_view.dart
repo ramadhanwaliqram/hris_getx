@@ -85,7 +85,6 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 controller.listHistories.value = snapshot.data!;
-                print("DATA BANG ${controller.listHistories.value.data}");
                 if (controller.listHistories.value.data!.isEmpty) {
                   return Center(
                     child: Text(
@@ -149,7 +148,7 @@ class PaidLeaveView extends GetView<PaidLeaveController> {
                                       leaveStatus = 'Diajukan';
                                       leaveColor = Color(0xffFFB000);
                                     }
-                                    if (leaveStatus == 'approved') {
+                                    if (leaveStatus == 'accept') {
                                       leaveStatus = 'Disetujui';
                                       leaveColor = Color(0xff00E23F);
                                     }
